@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabaseClient'
-import { Plus, Edit, Trash2, Loader2, Package, X, Upload } from 'lucide-react'
+import { Plus, Edit, Trash2, Loader2, Package, X } from 'lucide-react'
 import Toast from '../../components/Toast'
+import ImageUpload from '../../components/ImageUpload'
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState([])
@@ -329,28 +330,14 @@ export default function AdminDashboard() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  URL de l'image
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Image du produit
                 </label>
-                <div className="flex space-x-2">
-                  <input
-                    type="url"
-                    value={formData.image_url}
-                    onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                    className="flex-1 px-4 py-3 bg-background rounded-xl border-0 focus:ring-2 focus:ring-primary/30"
-                    placeholder="https://exemple.com/image.jpg"
-                  />
-                </div>
-                {formData.image_url && (
-                  <div className="mt-2 w-24 h-24 bg-cream rounded-xl overflow-hidden">
-                    <img
-                      src={formData.image_url}
-                      alt="Aperçu"
-                      className="w-full h-full object-cover"
-                      onError={(e) => e.target.style.display = 'none'}
-                    />
-                  </div>
-                )}
+                <ImageUpload
+                  value={formData.image_url}
+                  onChange={(url) => setFormData({ ...formData, image_url: url })}
+                  onError={(error) => setToast({ message: error, type: 'error' })}
+                />
               </div>
 
               <div className="flex space-x-3 pt-4">
